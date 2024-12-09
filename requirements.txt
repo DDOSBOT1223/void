@@ -1,6 +1,0 @@
-flask
-aiogram
-pymongo
-telebot
-chmod +x *
-./DEVIL
