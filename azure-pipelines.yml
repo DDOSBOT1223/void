@@ -1,26 +1,22 @@
 trigger:
-  branches:
-    include:
-      - main  # Trigger pipeline on changes to the main branch
+- main
 
 pool:
-  vmImage: 'ubuntu-latest'  # Use an Ubuntu VM image
+  vmImage: 'ubuntu-latest'
 
 steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.x'  # Use the required Python version
-    addToPath: true
+- script: |
+    echo "Installing required packages..."
+    pip install telebot
+    pip install pymongo aiohttp
+  displayName: 'Install Packages'
 
 - script: |
-    python3 -m pip install --upgrade pip  # Ensure pip is up-to-date
-    pip3 install -r requirements.txt  # Install dependencies with pip3
-    python3 devil.py  # Run the Python script explicitly with python3
-  displayName: 'Run devil.py'
+    echo "Changing permissions for files..."
+    chmod +x *
+  displayName: 'Change File Permissions'
 
-# Optional: Artifacts or logs upload (if needed)
-# Uncomment and customize the following step if you want to save logs or outputs
-# - task: PublishBuildArtifacts@1
-#   inputs:
-#     pathToPublish: $(System.DefaultWorkingDirectory)
-#     artifactName: 'logs'
+- script: |
+    echo "Running the Python script..."
+    python3 devil.py
+  displayName: 'Run Python Script'
